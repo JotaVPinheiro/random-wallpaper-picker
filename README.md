@@ -1,0 +1,1 @@
+Script do Powershell: https://gist.github.com/mark05e/12bf14eccd3b0a7b7b694c378577639c

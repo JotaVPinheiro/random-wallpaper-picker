@@ -1,6 +1,4 @@
-$currentPath = Get-Location;
-
-$imgPath = "$currentPath/img.png"
+param($imgPath)
 
 $code = @' 
 using System.Runtime.InteropServices; 
@@ -20,3 +18,5 @@ namespace Win32{
 add-type $code 
 
 [Win32.Wallpaper]::SetWallpaper($imgPath)
+
+Remove-Item $imgPath

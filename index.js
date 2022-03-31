@@ -1,10 +1,13 @@
 import fetch from "node-fetch";
 import { PowerShell } from "node-powershell";
 import ImageDownloader from "image-downloader";
+import fs from "fs";
 
 console.log('Starting...')
 
 let filePath = process.cwd() + "/cache"
+if (!fs.existsSync(filePath))
+    fs.mkdirSync(filePath)
 
 const subs = ['wallpaper', 'wallpapers']
 

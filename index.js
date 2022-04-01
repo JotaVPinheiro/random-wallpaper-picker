@@ -43,7 +43,7 @@ function DownloadImage(url) {
     })
     .then(({ filename }) => {
         console.log('Setting wallpaper...')
-        PowerShell.$`./setWall.ps1 -imgPath ${filename}`
+        PowerShell.$`./SetWall.ps1 -imgPath ${filename}`
     })
 }
 

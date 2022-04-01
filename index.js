@@ -31,9 +31,10 @@ fetch(redditUrl)
     console.log(`Image URL: ${chosenPost.data.url_overridden_by_dest}`)
 
     DownloadImage(chosenPost.data.url_overridden_by_dest)
+    WriteInHistory(chosenPost.data)
 })
 
-// Function that download the image from the chosen post
+// Download the image from the chosen post
 function DownloadImage(url) {
     console.log('Downloading image...')
     ImageDownloader.image({
@@ -46,7 +47,19 @@ function DownloadImage(url) {
     })
 }
 
-// Function that returns the url to the chosen sub
+// Returns the url to the chosen sub
 function RedditURLTo(sub) {
     return `https://www.reddit.com/r/${sub}/.json`
+}
+
+// Write url's in history file
+function WriteInHistory(post) {
+    let path = process.cwd() + '/cache/history.txt'
+    let data = `
+    [${Date().slice(0,24)}]
+    Post URL: ${post.permalink}
+    Image URL: ${post.url_overridden_by_dest}
+    `
+
+    fs.appendFileSync(path, data)
 }

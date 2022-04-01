@@ -43,7 +43,7 @@ function DownloadImage(url) {
     })
     .then(({ filename }) => {
         console.log('Setting wallpaper...')
-        PowerShell.$`./SetWall.ps1 -imgPath ${filename}`
+        PowerShell.$`./setWall.ps1 -imgPath ${filename}`
     })
 }
 
@@ -57,7 +57,7 @@ function WriteInHistory(post) {
     let path = process.cwd() + '/cache/history.txt'
     let data = `
     [${Date().slice(0,24)}]
-    Post URL: ${post.permalink}
+    Post URL: https://www.reddit.com${post.permalink}
     Image URL: ${post.url_overridden_by_dest}
     `
 

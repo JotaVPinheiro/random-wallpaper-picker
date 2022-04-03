@@ -14,6 +14,8 @@ const subs = ['wallpaper', 'wallpapers']
 let chosenSub = subs[Math.floor(Math.random() * subs.length)]
 console.log(`Chosen sub: r/${chosenSub}`)
 
+// Returns the url to the chosen sub
+const RedditURLTo = sub => `https://www.reddit.com/r/${sub}/.json`
 let redditUrl = RedditURLTo(chosenSub)
 
 fetch(redditUrl)
@@ -45,11 +47,6 @@ function DownloadImage(url) {
         console.log('Setting wallpaper...')
         PowerShell.$`./SetWall.ps1 -imgPath ${filename}`
     })
-}
-
-// Returns the url to the chosen sub
-function RedditURLTo(sub) {
-    return `https://www.reddit.com/r/${sub}/.json`
 }
 
 // Write url's in history file

@@ -30,7 +30,7 @@ fetch(redditUrl)
     console.log(`Image URL: ${chosenPost.data.url_overridden_by_dest}`);
 
     DownloadImage(chosenPost.data.url_overridden_by_dest);
-    WriteInHistory(chosenPost.data);
+    WriteInLog(chosenPost.data);
   });
 
 // Download the image from the chosen post
@@ -46,13 +46,18 @@ function DownloadImage(url) {
 }
 
 // Write url's in history file
-function WriteInHistory(post) {
-  let path = process.cwd() + "/tmp/history.txt";
-  let data = `
-    [${Date().slice(0, 24)}]
-    Post URL: https://www.reddit.com${post.permalink}
-    Image URL: ${post.url_overridden_by_dest}
-    `;
+function WriteInLog(post) {
+  const path = "./tmp/log.json";
+  if (!fs.existsSync(path)) fs.writeFileSync(path, "[]");
 
-  fs.appendFileSync(path, data);
+  const rawData = fs.readFileSync(path);
+  const data = JSON.parse(rawData) || [];
+
+  data.push({
+    timestamp: new Date(),
+    postURL: `https://www.reddit.com${post.permalink}`,
+    imageURL: post.url_overridden_by_dest,
+  });
+
+  fs.writeFileSync(path, JSON.stringify(data));
 }

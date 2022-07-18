@@ -5,14 +5,14 @@ import fs from "fs";
 
 console.log("Starting...");
 
-let filePath = process.cwd() + "/cache";
+let filePath = process.cwd() + "/tmp";
 if (!fs.existsSync(filePath)) fs.mkdirSync(filePath);
 
 const rawSubs = fs.readFileSync("./src/data/subs.json");
 const { subs } = JSON.parse(rawSubs);
 
 let chosenSub = subs[Math.floor(Math.random() * subs.length)];
-console.log(`Chosen sub: r/${chosenSub}`);
+console.log("Chosen sub:", chosenSub);
 
 let redditUrl = `https://www.reddit.com/${chosenSub}.json`;
 
@@ -47,7 +47,7 @@ function DownloadImage(url) {
 
 // Write url's in history file
 function WriteInHistory(post) {
-  let path = process.cwd() + "/cache/history.txt";
+  let path = process.cwd() + "/tmp/history.txt";
   let data = `
     [${Date().slice(0, 24)}]
     Post URL: https://www.reddit.com${post.permalink}

@@ -8,14 +8,13 @@ console.log("Starting...");
 let filePath = process.cwd() + "/cache";
 if (!fs.existsSync(filePath)) fs.mkdirSync(filePath);
 
-const subs = ["wallpaper", "wallpapers"];
+const rawSubs = fs.readFileSync("./src/data/subs.json");
+const { subs } = JSON.parse(rawSubs);
 
 let chosenSub = subs[Math.floor(Math.random() * subs.length)];
 console.log(`Chosen sub: r/${chosenSub}`);
 
-// Returns the url to the chosen sub
-const RedditURLTo = (sub) => `https://www.reddit.com/r/${sub}/.json`;
-let redditUrl = RedditURLTo(chosenSub);
+let redditUrl = `https://www.reddit.com/${chosenSub}.json`;
 
 fetch(redditUrl)
   .then((response) => response.json())

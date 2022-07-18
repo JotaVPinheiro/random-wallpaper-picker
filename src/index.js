@@ -1,66 +1,31 @@
-import fetch from "node-fetch";
 import { PowerShell } from "node-powershell";
-import ImageDownloader from "image-downloader";
-import fs from "fs";
 
-async function DownloadImage(url) {
+import { getRandomSub } from "./utils/getRandomSub.js";
+import { getPosts } from "./utils/getPosts.js";
+import { getRandomPost } from "./utils/getRandomPost.js";
+import { downloadImage } from "./utils/downloadImage.js";
+import { writeLog } from "./utils/writeLog.js";
+
+async function index() {
+  console.log("Starting...");
+
+  const chosenSub = getRandomSub();
+  console.log("Chosen sub:", chosenSub);
+
+  const posts = await getPosts(chosenSub);
+
+  const chosenPost = getRandomPost(posts);
+
+  console.log("Post URL:", `https://www.reddit.com${chosenPost.permalink}`);
+  console.log("Image URL:", chosenPost.url_overridden_by_dest);
+
   console.log("Downloading image...");
-
-  const { filename } = await ImageDownloader.image({
-    url: url,
-    dest: filePath,
-  });
+  const filename = await downloadImage(chosenPost.url_overridden_by_dest);
 
   console.log("Setting wallpaper...");
+  PowerShell.$`./src/setWallpaper.ps1 -imgPath ${filename}`;
 
-  PowerShell.$`./src/SetWallpaper.ps1 -imgPath ${filename}`;
+  writeLog(chosenPost);
 }
 
-function WriteLog(post) {
-  const path = "./tmp/log.json";
-  if (!fs.existsSync(path)) fs.writeFileSync(path, "[]");
-
-  const rawData = fs.readFileSync(path);
-  const data = JSON.parse(rawData) || [];
-
-  data.push({
-    timestamp: new Date(),
-    postURL: `https://www.reddit.com${post.permalink}`,
-    imageURL: post.url_overridden_by_dest,
-  });
-
-  fs.writeFileSync(path, JSON.stringify(data));
-}
-
-async function loadPost(redditUrl) {
-  const response = await fetch(redditUrl);
-  const { data } = await response.json();
-
-  let postsURLs = [];
-
-  data.children.map((post) => {
-    if (post.data.post_hint == "image") postsURLs.push(post);
-  });
-
-  let chosenPost = postsURLs[Math.floor(Math.random() * postsURLs.length)];
-  console.log(`Post URL: https://www.reddit.com${chosenPost.data.permalink}`);
-  console.log(`Image URL: ${chosenPost.data.url_overridden_by_dest}`);
-
-  DownloadImage(chosenPost.data.url_overridden_by_dest);
-  WriteLog(chosenPost.data);
-}
-
-console.log("Starting...");
-
-let filePath = process.cwd() + "/tmp";
-if (!fs.existsSync(filePath)) fs.mkdirSync(filePath);
-
-const rawSubs = fs.readFileSync("./src/data/subs.json");
-const subs = JSON.parse(rawSubs);
-
-let chosenSub = subs[Math.floor(Math.random() * subs.length)];
-console.log("Chosen sub:", chosenSub);
-
-let redditUrl = `https://www.reddit.com/${chosenSub}.json`;
-
-loadPost(redditUrl);
+index();

@@ -1,8 +1,26 @@
 {
+  "type": "module",
+  "name": "random-wallpaper-picker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JotaVPinheiro/random-wallpaper-picker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "image-downloader": "^4.1.0",
-    "node-fetch": "^3.2.3",
+    "image-downloader": "^4.3.0",
+    "node-fetch": "^3.2.9",
     "node-powershell": "^5.0.1"
   },
-  "type": "module"
+  "bugs": {
+    "url": "https://github.com/JotaVPinheiro/random-wallpaper-picker/issues"
+  },
+  "homepage": "https://github.com/JotaVPinheiro/random-wallpaper-picker#readme",
+  "description": ""
 }

@@ -9,7 +9,7 @@ let filePath = process.cwd() + "/tmp";
 if (!fs.existsSync(filePath)) fs.mkdirSync(filePath);
 
 const rawSubs = fs.readFileSync("./src/data/subs.json");
-const { subs } = JSON.parse(rawSubs);
+const subs = JSON.parse(rawSubs);
 
 let chosenSub = subs[Math.floor(Math.random() * subs.length)];
 console.log("Chosen sub:", chosenSub);
